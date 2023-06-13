@@ -11,9 +11,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 using VTOLVR.Multiplayer;
 using static Rewired.UI.ControlMapper.ControlMapper;
 using Debug = UnityEngine.Debug;
+using Image = UnityEngine.UI.Image;
 using Object = UnityEngine.Object;
 
 namespace CustomAircraftTemplateTejas
@@ -33,12 +36,92 @@ namespace CustomAircraftTemplateTejas
 
 
         }
-       
+
+        
+
+
     }
 
 
+    [HarmonyPatch(typeof(BlackoutEffect), nameof(BlackoutEffect.LateUpdate))]
+    public class BlackoutPatchPost
+    {
+        private static bool Prefix(BlackoutEffect __instance)
+        {
 
-    
+            
+            
+
+            Traverse trav1 = Traverse.Create(__instance);
+            float num = Mathf.Abs((float)trav1.Field("gAccum").GetValue()) * __instance.aFactor;
+            trav1.Field("alpha").SetValue(Mathf.Lerp((float)trav1.Field("gAccum").GetValue(), num, 20f * Time.deltaTime));
+            //Color32 alphaCol = __instance.quadRenderer.GetComponent<MeshRenderer>().material.GetColor("_Cutoff");
+            //Debug.Log("BPP 1.0:" + alphaCol);
+            float newAlpha =  (float)trav1.Field("alpha").GetValue();
+            //Debug.Log("BPP 1.0:" + newAlpha);
+            if (newAlpha < 0.001f)
+            {
+                __instance.quadRenderer.enabled = false;
+
+                return false; }
+
+            __instance.quadRenderer.enabled= true;
+            if (newAlpha > 1.0f) { newAlpha= 1.0f; }
+            if (newAlpha < -0.000001f) { newAlpha = 0.0f; }
+
+
+            //Debug.Log("BPP 1.1:" + newAlpha);
+            Color colorNew = new Color(0f, 0f, 0f, newAlpha);
+            __instance.quadRenderer.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", colorNew);
+            if (!__instance.accelDied && __instance.useFlightInfo && __instance.flightInfo && __instance.flightInfo.maxInstantaneousG > __instance.instantaneousGDeath)
+            {
+                FlightLogger.Log("Died by instantaneous G-force (" + __instance.flightInfo.maxInstantaneousG.ToString("0.0") + ")");
+                __instance.AccelDie();
+            }
+            return false;
+        }
+
+        }
+
+    //    [HarmonyPatch(typeof(BlackoutEffect), nameof(BlackoutEffect.Start))]
+    //public class BlackoutPatch
+    //{
+    //    private static bool Prefix(BlackoutEffect __instance)
+    //    {
+    //        Debug.Log("BProfile 1.0");
+    //        Traverse trav1 = Traverse.Create(__instance);
+    //        Debug.Log("BProfile 1.2");
+    //        trav1.Field("images").SetValue(__instance.GetComponentsInChildren<Image>());
+    //        Debug.Log("BProfile 1.1");
+    //        if (__instance.quadRenderer)
+    //        {
+    //            Debug.Log("BProfile 1.3");
+    //            Image[] array = (Image[])trav1.Field("images").GetValue();
+    //            for (int i = 0; i < array.Length; i++)
+    //            {
+    //                Debug.Log("BProfile 1.4");
+    //                array[i].gameObject.SetActive(false);
+    //            }
+    //           MaterialPropertyBlock mat = new MaterialPropertyBlock();
+    //            Debug.Log("BProfile 1.5");
+    //            trav1.Field("quadProps").SetValue(mat);
+    //            Debug.Log("BProfile 1.6");
+    //            trav1.Field("colorID").SetValue(Shader.PropertyToID("_TintColor"));
+    //        }
+    //        trav1.Field("nvg").SetValue(__instance.GetComponentInParent<NightVisionGoggles>());
+    //        if (!__instance.flightInfo)
+    //        {
+    //            __instance.flightInfo = __instance.GetComponentInParent<FlightInfo>();
+    //        }
+    //        VehicleMaster componentInParent = __instance.GetComponentInParent<VehicleMaster>();
+    //        if (componentInParent)
+    //        {
+    //            componentInParent.OnPilotDied += __instance.AccelDie;
+    //        }
+
+    //        return false;
+    //    }
+    //}
 
 
     [HarmonyPatch(typeof(VTResources), nameof(VTResources.LoadExternalVehicle))]
@@ -142,10 +225,10 @@ namespace CustomAircraftTemplateTejas
         public static void Postfix(AuxilliaryPowerUnit __instance)
         {
 
-            Debug.Log("Tejas  1.27");
+            //Debug.Log("Tejas  1.27");
             CustomElements.SetUpGauges();
             PilotSelectPatch.SetNVGShader();
-           // PilotSelectPatch.SetBlackoutShader();
+           
 
             //Debug.Log("Tejas  1.28");
 
@@ -165,7 +248,7 @@ namespace CustomAircraftTemplateTejas
 
 
     [HarmonyPatch(typeof(VTResources), nameof(VTResources.LoadCustomCampaignAtPath))]
-    class wyvern_CSIPatch_LoadVTEditorCustomCampaigns
+    class tejas_CSIPatch_LoadVTEditorCustomCampaigns
     {
         static bool Prefix(VTResources __instance, string filePath, ref bool skipUnmodified)
         {
@@ -178,25 +261,7 @@ namespace CustomAircraftTemplateTejas
 
 
 
-    //[HarmonyPatch(typeof(MissileLauncherSync), nameof(MissileLauncherSync.LoadMissilesRoutine))]
-    //public class MLSyncCustoms
-    //{
-    //    private static bool Prefix(MissileLauncherSync __instance)
-    //    {
-    //        Debug.Log("Tejas  MLS 0.0");
-    //        GameObject prefab = __instance.mlEq.ml.missilePrefab;
-    //        Debug.Log("Tejas  MLS 0.1 " + prefab.name);
-    //        String resourcePath = __instance.mlEq.missileResourcePath;
-    //        Debug.Log("Tejas  MLS 0.2 " + resourcePath);
-    //        if (resourcePath.Contains("CustomWeapon"))
-    //        {
-    //            Debug.Log("Tejas  MLS 0.3");
-    //            CustomElements.RegisterCustomWeapons(resourcePath, prefab);
-    //        }
-    //        return true;
-    //    }
-    //}
-
+    
 
     [HarmonyPatch(typeof(CampaignSelectorUI), nameof(CampaignSelectorUI.ViewCampaign))]
     public class CampaignScreenCreatorIfNoCampaigns
@@ -206,7 +271,7 @@ namespace CustomAircraftTemplateTejas
             
             Traverse trav1 = Traverse.Create(__instance);
             int cIDX = (int) trav1.Field("campaignIdx").GetValue();
-            Debug.Log("cIDX = " + cIDX);
+            //Debug.Log("cIDX = " + cIDX);
             if (cIDX == -1) 
             { trav1.Field("campaignIdx").SetValue(0);
 
@@ -231,7 +296,7 @@ namespace CustomAircraftTemplateTejas
         public static IEnumerator BetterSetupCampaignScreenRoutine(CampaignSelectorUI instance)
         {
             //Debug.unityLogger.logEnabled = Main.logging;
-            Debug.Log("Tejas BSCSCR Patch 1.0");
+            //Debug.Log("Tejas BSCSCR Patch 1.0");
             var traverse = Traverse.Create(instance);
 
             instance.loadingCampaignScreenObj.SetActive(true);
@@ -273,7 +338,7 @@ namespace CustomAircraftTemplateTejas
             //Debug.Log("Tejas BSCSCR Patch 1.6.0.1" + _aircraft[0]);
 
             {
-                Debug.Log("Tejas BSCSCR Patch 1.6.1");
+                //Debug.Log("Tejas BSCSCR Patch 1.6.1");
                 _aircraft.Add("F/A-26B");
 
 
@@ -608,7 +673,7 @@ namespace CustomAircraftTemplateTejas
         static IEnumerator CSI_StartWorkshopCampaignRoutine(string campaignID)
         {
             
-            //   //Debug.unityLogger.logEnabled = Main.logging;
+            //Debug.unityLogger.logEnabled = Main.logging;
             //Debug.Log("Tejas CSI Patch 2.1");
             var traverse = Traverse.Create(instance);
 
@@ -677,7 +742,7 @@ namespace CustomAircraftTemplateTejas
         /** Replica of StartWorkshopCampaignRoutine. */
         static IEnumerator CSI_StartWorkshopMissionRoutine(string scenarioID)
         {
-            // //Debug.unityLogger.logEnabled = Main.logging;
+            //Debug.unityLogger.logEnabled = Main.logging;
             //Debug.Log("Tejas CSI Patch 3.0.1");
             var traverse = Traverse.Create(instance);
 

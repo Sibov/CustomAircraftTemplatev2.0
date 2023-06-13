@@ -14,7 +14,18 @@ using TMPro;
 namespace CustomAircraftTemplateTejas
 {
     //Elements should be included in here that are non standard and might be custom to the aircraft 
+    [ExecuteInEditMode]
+    public class CameraRenderWithMaterial : MonoBehaviour
+    {
+        public Material material;
+       // public RenderTexture source;
+        //public RenderTexture destination;
 
+        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        {
+            Graphics.Blit(source, destination, material);
+        }
+    }
     public class CustomElements : MonoBehaviour
     {
 
@@ -24,10 +35,11 @@ namespace CustomAircraftTemplateTejas
         }
 
 
-    
+       
 
+        
 
-    public static void SetUpGauges()
+        public static void SetUpGauges()
         {
             Battery componentInChildren = Main.aircraftCustom.GetComponentInChildren<Battery>(true);
             FlightInfo componentInChildren2 = Main.aircraftCustom.GetComponentInChildren<FlightInfo>(true);

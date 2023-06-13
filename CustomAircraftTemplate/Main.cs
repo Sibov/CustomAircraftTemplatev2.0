@@ -69,11 +69,10 @@ namespace CustomAircraftTemplateTejas
             //Debug.Log("Tejas ML3" + AircraftInfo.AircraftAssetbundleName);
 
             pathToBundle = Path.Combine(instance.ModFolder, AircraftInfo.AircraftAssetbundleName);
-            pathToAddonsBundle = Path.Combine(instance.ModFolder, "addons");
+            
 
             //Debug.Log("Tejas ML3" + pathToBundle);
-            bundleLoad = FileLoader.GetAssetBundleAsGameObject(pathToAddonsBundle, AircraftInfo.AircraftAssetbundleName);
-
+            
             
             HarmonyInstance harmonyInstance = HarmonyInstance.Create(AircraftInfo.HarmonyId);
             
@@ -87,7 +86,7 @@ namespace CustomAircraftTemplateTejas
             
             
             
-            Debug.Log("Tejas ML6");
+            //Debug.Log("Tejas ML6");
             VTResources.OnLoadingPlayerVehicles += AircraftAPI.VehicleAdd;
 
             AircraftAPI.VehicleAdd();
@@ -112,6 +111,7 @@ namespace CustomAircraftTemplateTejas
         void Update()
         {
             
+
             }
 
 
@@ -127,7 +127,7 @@ namespace CustomAircraftTemplateTejas
         private void SceneLoaded(VTOLScenes scene)
         {
             //If you want something to happen in only one (or more) scenes, this is where you define it.
-            //Debug.unityLogger.logEnabled = Main.logging;
+            
             //For example, lets say you're making a mod which only does something in the ready room and the loading scene. This is how your code could look:
             switch (scene)
             {

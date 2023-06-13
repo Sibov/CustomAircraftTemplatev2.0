@@ -9,17 +9,18 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace CustomAircraftTemplateTejas
+namespace CustomAircraftTemplateTejas 
 {
-    public class PIDFixer
+    public class PIDFixer : MonoBehaviour
     {
+    
 
         public static void IncreaseFlightAssistRollP()
         {
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("IFARP 0.0");
+            //Debug.Log("IFARP 0.0");
 
 
             FlightAssist FA = go.GetComponent<FlightAssist>();
@@ -31,7 +32,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("DFARP 0.0");
+            //Debug.Log("DFARP 0.0");
 
 
             FlightAssist FA = go.GetComponent<FlightAssist>();
@@ -44,7 +45,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("IFAPP 0.0");
+            //Debug.Log("IFAPP 0.0");
 
 
             FlightAssist FA = go.GetComponent<FlightAssist>();
@@ -56,7 +57,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("DFAPP 0.0");
+            //Debug.Log("DFAPP 0.0");
 
 
             FlightAssist FA = go.GetComponent<FlightAssist>();
@@ -70,7 +71,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("IAltP 0.0");
+            //Debug.Log("IAltP 0.0");
 
 
             VTOLAutoPilot AP = go.GetComponent<VTOLAutoPilot>();
@@ -82,7 +83,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("DAltP 0.0");
+            //Debug.Log("DAltP 0.0");
 
 
             VTOLAutoPilot AP = go.GetComponent<VTOLAutoPilot>();
@@ -95,7 +96,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("IAltP 0.0");
+            //Debug.Log("IAltP 0.0");
 
 
             VTOLAutoPilot AP = go.GetComponent<VTOLAutoPilot>();
@@ -107,7 +108,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("DAltP 0.0");
+            //Debug.Log("DAltP 0.0");
 
 
             VTOLAutoPilot AP = go.GetComponent<VTOLAutoPilot>();
@@ -120,7 +121,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("IAltP 0.0");
+            //Debug.Log("IAltP 0.0");
 
 
 
@@ -133,7 +134,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("DAltP 0.0");
+//Debug.Log("DAltP 0.0");
 
 
             VTOLAutoPilot AP = go.GetComponent<VTOLAutoPilot>();
@@ -146,7 +147,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("IAltP 0.0");
+            //Debug.Log("IAltP 0.0");
 
 
             VTOLAutoPilot AP = go.GetComponent<VTOLAutoPilot>();
@@ -158,7 +159,7 @@ namespace CustomAircraftTemplateTejas
             GameObject go = VTOLAPI.GetPlayersVehicleGameObject();
 
 
-            Debug.Log("DAltP 0.0");
+            //Debug.Log("DAltP 0.0");
 
 
             VTOLAutoPilot AP = go.GetComponent<VTOLAutoPilot>();
