@@ -247,17 +247,7 @@ namespace CustomAircraftTemplateTejas
     }
 
 
-    [HarmonyPatch(typeof(VTResources), nameof(VTResources.LoadCustomCampaignAtPath))]
-    class tejas_CSIPatch_LoadVTEditorCustomCampaigns
-    {
-        static bool Prefix(VTResources __instance, string filePath, ref bool skipUnmodified)
-        {
-
-
-            skipUnmodified = false;
-            return true;
-        }
-    }
+    
 
 
 
@@ -501,7 +491,9 @@ namespace CustomAircraftTemplateTejas
         }
     }
 
-        [HarmonyPatch(typeof(CampaignSelectorUI), "FinallyOpenCampaignSelector")]
+  
+
+    [HarmonyPatch(typeof(CampaignSelectorUI), "FinallyOpenCampaignSelector")]
     public static class Tejas_CSIPatch_FinallyOpenCampaignSelector
     {
 
